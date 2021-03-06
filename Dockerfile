@@ -28,14 +28,18 @@ RUN pip install pylatexenc
 # per https://qiskit.org/textbook/ch-prerequisites/setting-the-environment.html
 
 # Create .qiskit folder if it does not exist
-RUN mkdir -p ".qiskit"
+RUN mkdir -p .qiskit
 # Copy settings.conf
-COPY settings.conf .qiskit/
+COPY configs/settings.conf .qiskit/
 
 # Create .ipython/profile_default/ folder if it does not exist
-RUN mkdir -p ".ipython/profile_default/"
+RUN mkdir -p .ipython/profile_default/
 # Copy ipython_kernel_config.python
-COPY ipython_kernel_config.py ".ipython/profile_default/"
+COPY configs/ipython_kernel_config.py .ipython/profile_default/
+
+# Make default folder for notebooks and copy over any local notebooks over
+RUN mkdir -p notebooks
+COPY notebooks/*.ipynb notebooks/
 
 # Run Jupyter
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
